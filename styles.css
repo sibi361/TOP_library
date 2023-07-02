@@ -112,15 +112,15 @@ input[type="text"]:focus-visible {
 .content-inner {
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-auto-rows: min-content;
     gap: 1.5rem;
 }
 
 .card {
     background-color: #fff;
-    padding: 2rem;
     margin-bottom: 0.5rem;
+    padding: 2rem;
     font-size: 1.1rem;
 
     border-radius: 0.5rem;
@@ -128,24 +128,22 @@ input[type="text"]:focus-visible {
 
     display: grid;
     justify-content: space-between;
+    grid-auto-flow: column;
 }
 
 .card-title {
     margin-bottom: 0.2rem;
 }
 
-.card-text {
+.card-author {
     color: var(--text-color);
 }
 
 .card-buttons {
-    margin-top: 2rem;
-
     display: grid;
     justify-content: end;
     align-items: end;
-    grid-auto-flow: column;
-    gap: 2rem;
+    gap: 0.5rem;
 }
 
 .card-buttons img {
@@ -180,6 +178,10 @@ div[class*="-title"] {
 div[class*="-heading"] {
     font-size: 1.5rem;
     /* font-weight: initial; */
+}
+
+.hidden {
+    display: none;
 }
 
 .icon {

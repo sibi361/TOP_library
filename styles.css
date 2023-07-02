@@ -1,0 +1,218 @@
+:root {
+    --text-color: #636363;
+}
+
+body {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+        segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
+        arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    height: 100vh;
+}
+
+.header {
+    margin: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    width: 3rem;
+}
+
+.logo-text {
+    display: inline;
+    font-size: 1.9rem;
+}
+
+.form {
+    flex: 0.95;
+    display: flex;
+    align-items: center;
+}
+
+.form-inputs {
+    flex: 1;
+    display: flex;
+    /* grid-template-columns: 1fr 1fr 1fr 2rem; */
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0.5rem;
+}
+
+input[type="text"] {
+    min-width: 100px;
+    height: 0.4rem;
+    width: 100%;
+    background-color: #e2e8f0;
+    border: none;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+#book-pageCount {
+    max-width: 4rem;
+}
+
+input[type="text"]:focus-visible {
+    border: none;
+}
+
+.form-read {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.form-read * {
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.form-read *:hover {
+    background-color: rgba(60, 64, 67, 0.1);
+}
+
+.read-selected {
+    background-color: rgba(116, 201, 247, 0.4) !important;
+}
+
+.btn {
+    background-color: #1992d4;
+    color: #fff;
+    padding: 0.7rem 1rem;
+    border-radius: 4rem;
+    width: 5rem;
+    height: 1rem;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    background-color: #e2e8f0;
+    padding: 2rem;
+    box-shadow: 0px 1px 1px #e2e8f0, 0px -1px 1px #e2e8f0;
+}
+
+.content-inner {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: min-content;
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: #fff;
+    padding: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+
+    border-radius: 0.5rem;
+    box-shadow: inset 508px 0px 0px -500px #f0b429, 3px 3px 10px #d3d6d8;
+
+    display: grid;
+    justify-content: space-between;
+}
+
+.card-title {
+    margin-bottom: 0.2rem;
+}
+
+.card-text {
+    color: var(--text-color);
+}
+
+.card-buttons {
+    margin-top: 2rem;
+
+    display: grid;
+    justify-content: end;
+    align-items: end;
+    grid-auto-flow: column;
+    gap: 2rem;
+}
+
+.card-buttons img {
+    width: 1.5rem;
+    transition: 0.1s;
+}
+
+.card-buttons img:hover {
+    transform: scale(1.2);
+}
+
+.footer {
+    opacity: 0.5;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.header,
+div[class*="-heading"],
+div[class*="-title"] {
+    font-weight: bold;
+}
+
+div[class*="-heading"] {
+    font-size: 1.5rem;
+    /* font-weight: initial; */
+}
+
+.icon {
+    width: 1.5rem;
+}
+
+.icon,
+.btn,
+.card {
+    cursor: pointer;
+}
+
+.icon,
+.btn,
+.card,
+input[type="text"] {
+    transition: 0.1s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+input[type="text"]:hover,
+input[type="text"]:focus,
+.btn:hover {
+    transform: scale(1.03);
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+* {
+    /* transform: none !important; */
+}

@@ -9,5 +9,5 @@ DEMO: https://sibi361.github.io/TOP_library/
 -   [ ] Add books along with the author name, page count and read status
 -   [ ] Persistent data storage in browser's `localStorage`
 -   [ ] Mobile friendly UI
--   [ ] Favourite books
+-   [ ] Ability to remove as well as favourite books
 -   [ ] Share book info by copying to clipboard

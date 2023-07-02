@@ -132,11 +132,12 @@ input[type="text"]:focus-visible {
 }
 
 .card-title {
-    margin-bottom: 0.2rem;
+    margin-bottom: 1rem;
 }
 
-.card-author {
+.card-text {
     color: var(--text-color);
+    margin-bottom: 1rem;
 }
 
 .card-buttons {
@@ -148,11 +149,14 @@ input[type="text"]:focus-visible {
 
 .card-buttons img {
     width: 1.5rem;
-    transition: 0.1s;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    transition: 0.2s;
 }
 
 .card-buttons img:hover {
-    transform: scale(1.2);
+    background-color: rgba(60, 64, 67, 0.1);
 }
 
 .footer {
@@ -202,7 +206,7 @@ input[type="text"] {
 }
 
 .icon:hover {
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
 }
 
 input[type="text"]:hover,
@@ -212,7 +216,11 @@ input[type="text"]:focus,
 }
 
 .card:hover {
-    transform: scale(1.02);
+    /* transform: scale(1.02); */
+}
+
+.card-buttons img:hover {
+    /* transform: scale(1.2); */
 }
 
 * {

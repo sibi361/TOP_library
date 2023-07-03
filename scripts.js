@@ -60,7 +60,12 @@ const SAMPLE_BOOKS = [
 //     this.author = author;
 //     this.pages = pages;
 //     this.read = read;
+//     this.fav = false;
 // }
+
+// booksList.forEach((book) => {
+//     const newBook = Book(book, author, pages, read)
+// });
 
 function addBookToDomLibrary(book) {
     const title = document.createElement("div");
@@ -104,50 +109,76 @@ function addBookToDomLibrary(book) {
     libraryRoot.append(card);
 }
 
-// booksList.forEach((book) => {
-//     const newBook = Book(book, author, pages, read)
-// });
-
 let cardButtonsHtml = "";
-function initFillLibrary(books) {
+function initFillLibrary() {
     cardButtonsHtml = templateCardButtons.outerHTML;
     templateCardButtons.remove();
 
     libraryRoot.innerHTML = "";
-    books.forEach((book) => {
+    library.forEach((book) => {
         addBookToDomLibrary(book);
     });
 }
 
 function toggleFavState() {
-    const notFavBtn = this.parentElement.querySelector(".not-fav");
-    const favBtn = this.parentElement.querySelector(".fav");
+    const cardButtons = this.parentElement;
+
+    const bookTitle =
+        cardButtons.parentElement.previousSibling.querySelector(
+            ".card-title"
+        ).textContent;
+    const bookIndex = library.findIndex((book) => book.title === bookTitle);
+
+    const notFavBtn = cardButtons.querySelector(".not-fav");
+    const favBtn = cardButtons.querySelector(".fav");
+
     if (notFavBtn.classList.contains("hidden")) {
+        library[bookIndex].fav = false;
+
         notFavBtn.classList.remove("hidden");
         favBtn.classList.add("hidden");
     } else {
+        library[bookIndex].fav = true;
+
         notFavBtn.classList.add("hidden");
         favBtn.classList.remove("hidden");
     }
 }
 
 function toggleReadState() {
-    const unreadBtn = this.parentElement.querySelector(".unread");
-    const readBtn = this.parentElement.querySelector(".read");
+    const cardButtons = this.parentElement;
+
+    const bookTitle =
+        cardButtons.parentElement.previousSibling.querySelector(
+            ".card-title"
+        ).textContent;
+    const bookIndex = library.findIndex((book) => book.title !== bookTitle);
+
+    const unreadBtn = cardButtons.querySelector(".unread");
+    const readBtn = cardButtons.querySelector(".read");
+
     if (unreadBtn.classList.contains("hidden")) {
+        library[bookIndex].read = false;
+
         unreadBtn.classList.remove("hidden");
         readBtn.classList.add("hidden");
     } else {
+        library[bookIndex].read = true;
+
         unreadBtn.classList.add("hidden");
         readBtn.classList.remove("hidden");
     }
+    console.log(library[bookIndex]);
 }
 
 function deleteBook() {
-    // assuming the title to be the primary key, it is unique throughout
-    const titleToBeDelete =
-        this.parentElement.previousSibling.querySelector(".card-title");
-    library = library.filter((book) => book.title !== titleToBeDelete);
+    const bookTitle =
+        this.parentElement.previousSibling.querySelector(
+            ".card-title"
+        ).textContent;
+
+    library = library.filter((book) => book.title !== bookTitle);
+
     this.parentElement.parentElement.remove();
     if (libraryRoot.childElementCount === 0) {
         libraryRoot.textContent = "No Books Saved";
@@ -155,4 +186,4 @@ function deleteBook() {
 }
 
 let library = SAMPLE_BOOKS;
-initFillLibrary(library);
+initFillLibrary();

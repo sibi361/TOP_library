@@ -10,4 +10,4 @@ DEMO: https://sibi361.github.io/TOP_library/
 -   [ ] Persistent data storage in browser's `localStorage`
 -   [ ] Mobile friendly UI
 -   [x] Ability to remove and favourite books
--   [ ] Add Undo On Delete
+-   [ ] Add Undo On Delete Feature

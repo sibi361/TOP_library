@@ -1,14 +1,3 @@
-const form = document.querySelector("form");
-const formTitle = document.querySelector("#book-title");
-const formAuthor = document.querySelector("#book-author");
-const formPages = document.querySelector("#book-pageCount");
-const formUnread = document.querySelector('img[alt="unread"]');
-const formRead = document.querySelector('img[alt="read"]');
-const formSubmit = document.querySelector("#submit");
-const libraryRoot = document.querySelector(".content-inner");
-const templateCard = document.querySelector("#template-card");
-const templateCardButtons = templateCard.querySelector(".card-buttons");
-
 const SAMPLE_BOOKS = [
     {
         author: "Chinua Achebe",
@@ -54,9 +43,15 @@ const SAMPLE_BOOKS = [
     },
 ];
 
-// booksList.forEach((book) => {
-//     const newBook = Book(book, author, pages, read)
-// });
+const formTitle = document.querySelector("#book-title");
+const formAuthor = document.querySelector("#book-author");
+const formPages = document.querySelector("#book-pageCount");
+const formUnread = document.querySelector('img[alt="unread"]');
+const formRead = document.querySelector('img[alt="read"]');
+const formSubmit = document.querySelector("#submit");
+const libraryRoot = document.querySelector(".content-inner");
+const templateCard = document.querySelector("#template-card");
+const templateCardButtons = templateCard.querySelector(".card-buttons");
 
 function addBookToDomLibrary(book) {
     const title = document.createElement("div");
@@ -114,9 +109,9 @@ function getBookTitle(cardButtons, getIndexInstead = false) {
             ".card-title"
         ).textContent;
     if (getIndexInstead) {
-        bookTitle = bookTitle.toLowerCase();
+        bookTitle = bookTitle.toLocaleLowerCase();
         return library.findIndex(
-            (book) => book.title.toLowerCase() === bookTitle
+            (book) => book.title.toLocaleLowerCase() === bookTitle
         );
     }
     return bookTitle;
@@ -157,18 +152,21 @@ function deleteBook() {
     }
 }
 
+// toggleNewBookFormReadState
 let formReadSwitch = false;
-function toggleNewBookFormReadState() {
-    if (formUnread.classList.contains("selected")) {
-        formReadSwitch = true;
-        formUnread.classList.remove("selected");
-        formRead.classList.add("selected");
-    } else {
-        formReadSwitch = false;
-        formUnread.classList.add("selected");
-        formRead.classList.remove("selected");
-    }
-}
+[formUnread, formRead].forEach((btn) =>
+    btn.addEventListener("click", () => {
+        if (formUnread.classList.contains("selected")) {
+            formReadSwitch = true;
+            formUnread.classList.remove("selected");
+            formRead.classList.add("selected");
+        } else {
+            formReadSwitch = false;
+            formUnread.classList.add("selected");
+            formRead.classList.remove("selected");
+        }
+    })
+);
 
 function newBook(title, author, pages, read) {
     this.title = title;
@@ -180,22 +178,18 @@ function newBook(title, author, pages, read) {
 
 function addBookFromUser() {
     const title = formTitle.value;
-    const titleLc = title.toLowerCase();
     const author = formAuthor.value;
     const pages = formPages.value;
-    if (
-        title.length === 0 ||
-        library.find((book) => book.title.toLowerCase() === titleLc)
-    ) {
+    if (title.length === 0) {
         formTitle.classList.add("invalid-input");
     } else if (author.length === 0) {
         formAuthor.classList.add("invalid-input");
     } else if (
-        pages.length === 0 &&
-        !isNaN(pages) && // number detection https://stackoverflow.com/a/175787
-        !isNaN(parseFloat(pages)) // whitespace strings
+        pages.length === 0 ||
+        isNaN(pages) // non-number detection https://stackoverflow.com/a/175787
     ) {
         formPages.classList.add("invalid-input");
+    } else if (bookAlreadyExists(title)) {
     } else {
         const book = new newBook(title, author, Number(pages), formReadSwitch);
         library.push(book);
@@ -203,14 +197,31 @@ function addBookFromUser() {
     }
 }
 
-[formTitle, formAuthor, formPages].forEach((btn) =>
-    btn.addEventListener("keypress", (e) =>
-        e.target.classList.remove("invalid-input")
-    )
-);
+function bookAlreadyExists(givenTitle) {
+    const titleLc = givenTitle.toLocaleLowerCase();
+    if (library.find((book) => book.title.toLocaleLowerCase() === titleLc)) {
+        formTitle.classList.add("invalid-input");
+        const cards = libraryRoot.querySelectorAll(".card");
+        cards.forEach((card) => {
+            const cardBookTitle = card.querySelector(".card-title").textContent;
+            if (cardBookTitle.toLocaleLowerCase() === titleLc) {
+                card.classList.add("invalid-input");
+            }
+        });
+        return true;
+    }
+    return false;
+}
 
-[formUnread, formRead].forEach((btn) =>
-    btn.addEventListener("click", toggleNewBookFormReadState)
+// reset errors
+[formTitle, formAuthor, formPages].forEach((btn) =>
+    btn.addEventListener("keypress", (e) => {
+        e.target.classList.remove("invalid-input");
+        const cards = libraryRoot.querySelectorAll(".card");
+        cards.forEach((card) => {
+            card.classList.remove("invalid-input");
+        });
+    })
 );
 
 formSubmit.addEventListener("click", () => {

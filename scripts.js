@@ -92,16 +92,13 @@ function addBookToDomLibrary(book) {
     if (book.fav) notFavBtn.classList.add("hidden");
     else favBtn.classList.add("hidden");
 
-    notFavBtn.addEventListener("click", toggleFavState);
-    favBtn.addEventListener("click", toggleFavState);
-
     const unreadBtn = card.querySelector(".unread");
     const readBtn = card.querySelector(".read");
     if (book.read) unreadBtn.classList.add("hidden");
     else readBtn.classList.add("hidden");
 
-    unreadBtn.addEventListener("click", toggleReadState);
-    readBtn.addEventListener("click", toggleReadState);
+    const toggleBtnList = [notFavBtn, favBtn, unreadBtn, readBtn];
+    toggleBtnList.forEach((btn) => btn.addEventListener("click", toggleState));
 
     const deleteBtn = card.querySelector(".delete");
     deleteBtn.addEventListener("click", deleteBook);
@@ -120,62 +117,42 @@ function initFillLibrary() {
     });
 }
 
-function toggleFavState() {
-    const cardButtons = this.parentElement;
-
+function getBookTitle(cardButtons, getIndexInstead = false) {
     const bookTitle =
         cardButtons.parentElement.previousSibling.querySelector(
             ".card-title"
         ).textContent;
-    const bookIndex = library.findIndex((book) => book.title === bookTitle);
-
-    const notFavBtn = cardButtons.querySelector(".not-fav");
-    const favBtn = cardButtons.querySelector(".fav");
-
-    if (notFavBtn.classList.contains("hidden")) {
-        library[bookIndex].fav = false;
-
-        notFavBtn.classList.remove("hidden");
-        favBtn.classList.add("hidden");
-    } else {
-        library[bookIndex].fav = true;
-
-        notFavBtn.classList.add("hidden");
-        favBtn.classList.remove("hidden");
-    }
+    if (getIndexInstead)
+        return library.findIndex((book) => book.title === bookTitle);
+    return bookTitle;
 }
 
-function toggleReadState() {
+function toggleState() {
     const cardButtons = this.parentElement;
+    const bookIndex = getBookTitle(cardButtons, true);
 
-    const bookTitle =
-        cardButtons.parentElement.previousSibling.querySelector(
-            ".card-title"
-        ).textContent;
-    const bookIndex = library.findIndex((book) => book.title !== bookTitle);
+    const options = this.parentElement.dataset.options
+        .split("|")
+        .map((op) => `.${op}`);
+    const offBtn = cardButtons.querySelector(options[0]);
+    const onBtn = cardButtons.querySelector(options[1]);
+    const key = options[1];
 
-    const unreadBtn = cardButtons.querySelector(".unread");
-    const readBtn = cardButtons.querySelector(".read");
+    if (offBtn.classList.contains("hidden")) {
+        library[bookIndex][key] = false;
 
-    if (unreadBtn.classList.contains("hidden")) {
-        library[bookIndex].read = false;
-
-        unreadBtn.classList.remove("hidden");
-        readBtn.classList.add("hidden");
+        offBtn.classList.remove("hidden");
+        onBtn.classList.add("hidden");
     } else {
-        library[bookIndex].read = true;
+        library[bookIndex][key] = true;
 
-        unreadBtn.classList.add("hidden");
-        readBtn.classList.remove("hidden");
+        offBtn.classList.add("hidden");
+        onBtn.classList.remove("hidden");
     }
-    console.log(library[bookIndex]);
 }
 
 function deleteBook() {
-    const bookTitle =
-        this.parentElement.previousSibling.querySelector(
-            ".card-title"
-        ).textContent;
+    const bookTitle = getBookTitle(this);
 
     library = library.filter((book) => book.title !== bookTitle);
 

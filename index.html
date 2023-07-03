@@ -39,13 +39,13 @@
                         />
                         <div class="form-read">
                             <img
-                                class="icon read-selected"
-                                src="icons/eye-remove-outline.svg"
+                                class="icon unread form-read-selected"
+                                src="icons/eye-off-outline.svg"
                                 alt="unread"
                             />
                             |
                             <img
-                                class="icon"
+                                class="icon read"
                                 src="icons/eye-check-outline.svg"
                                 alt="read"
                             />
@@ -58,28 +58,40 @@
             <div class="content">
                 <div class="content-heading">Your Books</div>
                 <div class="content-inner">
-                    <div class="card">
-                        <div class="card-title">Book Title</div>
+                    <div class="card" id="template-card">
                         <div class="card-inner">
+                            <div class="card-title">Book Title</div>
+                            <div class="card-text">Book Author</div>
+                            <div class="card-text">Book Page Count</div>
+                        </div>
+                        <div class="card-buttons">
                             <div>
-                                <div class="card-text">Book Author</div>
-                                <div class="card-text">Book Page Count</div>
+                                <img
+                                    class="not-fav"
+                                    src="icons/star-outline.svg"
+                                    alt="not fav"
+                                /><img
+                                    class="fav"
+                                    src="icons/star.png"
+                                    alt="fav"
+                                />
                             </div>
-                            <div class="card-buttons">
+                            <div>
                                 <img
                                     class="unread"
-                                    src="icons/eye-remove-outline.svg"
+                                    src="icons/eye-off-outline.svg"
                                     alt="mark as unread"
                                 /><img
                                     class="read"
                                     src="icons/eye-check-outline.svg"
                                     alt="mark as read"
-                                /><img
-                                    class="delete"
-                                    src="icons/delete.svg"
-                                    alt="delete"
                                 />
                             </div>
+                            <img
+                                class="delete"
+                                src="icons/delete.svg"
+                                alt="delete"
+                            />
                         </div>
                     </div>
                 </div>

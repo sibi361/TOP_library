@@ -125,14 +125,16 @@ input[type="text"]:focus-visible {
 
     border-radius: 0.5rem;
     box-shadow: inset 508px 0px 0px -500px #f0b429, 3px 3px 10px #d3d6d8;
-
-    display: grid;
-    justify-content: space-between;
-    grid-auto-flow: column;
 }
 
 .card-title {
     margin-bottom: 1rem;
+}
+
+.card-inner {
+    display: grid;
+    justify-content: space-between;
+    grid-auto-flow: column;
 }
 
 .card-text {
@@ -155,8 +157,13 @@ input[type="text"]:focus-visible {
     transition: 0.2s;
 }
 
-.card-buttons img:hover {
-    background-color: rgba(60, 64, 67, 0.1);
+.unread:hover {
+    background-color: rgba(40, 235, 95, 0.5);
+}
+
+.delete:hover,
+.read:hover {
+    background-color: rgba(235, 40, 95, 0.3);
 }
 
 .footer {

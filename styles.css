@@ -50,7 +50,7 @@ body {
     /* grid-template-columns: 1fr 1fr 1fr 2rem; */
     align-items: center;
     gap: 1rem;
-    margin: 0 0.5rem;
+    margin: 0 1rem;
 }
 
 input[type="text"] {
@@ -71,6 +71,10 @@ input[type="text"]:focus-visible {
     border: none;
 }
 
+.invalid-input {
+    border: 2px solid rgb(239, 52, 52) !important;
+}
+
 .form-read {
     display: grid;
     grid-auto-flow: column;
@@ -83,12 +87,12 @@ input[type="text"]:focus-visible {
     padding: 0.5rem;
 }
 
-.form-read-selected {
-    background-color: rgba(40, 235, 95, 0.5);
+.unread.selected {
+    background-color: rgba(235, 40, 95, 0.2);
 }
 
-.form-read-selected {
-    background-color: rgba(116, 201, 247, 0.4);
+.read.selected {
+    background-color: rgba(40, 235, 95, 0.3);
 }
 
 .btn {
@@ -176,8 +180,8 @@ input[type="text"]:focus-visible {
 }
 
 .unread:hover {
-    background-color: rgba(116, 201, 247, 0.4);
-    /* background-color: rgba(235, 40, 95, 0.3); */
+    /* background-color: rgba(116, 201, 247, 0.4); */
+    background-color: rgba(235, 40, 95, 0.3);
 }
 
 .delete:hover {

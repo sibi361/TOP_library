@@ -1,3 +1,10 @@
+const form = document.querySelector("form");
+const formTitle = document.querySelector("#book-title");
+const formAuthor = document.querySelector("#book-author");
+const formPages = document.querySelector("#book-pageCount");
+const formUnread = document.querySelector('img[alt="unread"]');
+const formRead = document.querySelector('img[alt="read"]');
+const formSubmit = document.querySelector("#submit");
 const libraryRoot = document.querySelector(".content-inner");
 const templateCard = document.querySelector("#template-card");
 const templateCardButtons = templateCard.querySelector(".card-buttons");
@@ -11,57 +18,41 @@ const SAMPLE_BOOKS = [
         fav: true,
     },
     {
-        author: "Hans Christian Andersen",
-        pages: 784,
-        title: "Fairy tales",
-        read: true,
-        fav: false,
-    },
-    {
-        author: "Dante Alighieri",
-        pages: 928,
-        title: "The Divine Comedy",
+        author: "The Jungle Book",
+        pages: 176,
+        title: "Rudyard Kipling",
         read: true,
         fav: true,
     },
-
     {
         author: "Jane Austen",
         pages: 226,
         title: "Pride and Prejudice",
         read: true,
+        fav: false,
+    },
+    {
+        author: "Frank Herbert",
+        pages: 896,
+        title: "Dune",
+        read: false,
+        fav: false,
+    },
+    {
+        author: "Jules Verne",
+        pages: 280,
+        title: "Around the World in Eighty Days",
+        read: true,
         fav: true,
     },
     {
-        author: "Honor\u00e9 de Balzac",
-        pages: 443,
-        title: "Le P\u00e8re Goriot",
-        read: false,
-        fav: false,
-    },
-    {
-        author: "Samuel Beckett",
-        pages: 256,
-        title: "Molloy, Malone Dies, The Unnamable, The Trilogy",
-        read: false,
-        fav: false,
-    },
-    {
-        author: "Giovanni Boccaccio",
-        pages: 1024,
-        title: "The Decameron",
+        author: "Agatha Christie",
+        pages: 272,
+        title: "And Then There Were None",
         read: false,
         fav: false,
     },
 ];
-
-// function Book(title, author, pages, read) {
-//     this.title = title;
-//     this.author = author;
-//     this.pages = pages;
-//     this.read = read;
-//     this.fav = false;
-// }
 
 // booksList.forEach((book) => {
 //     const newBook = Book(book, author, pages, read)
@@ -118,12 +109,16 @@ function initFillLibrary() {
 }
 
 function getBookTitle(cardButtons, getIndexInstead = false) {
-    const bookTitle =
+    let bookTitle =
         cardButtons.parentElement.previousSibling.querySelector(
             ".card-title"
         ).textContent;
-    if (getIndexInstead)
-        return library.findIndex((book) => book.title === bookTitle);
+    if (getIndexInstead) {
+        bookTitle = bookTitle.toLowerCase();
+        return library.findIndex(
+            (book) => book.title.toLowerCase() === bookTitle
+        );
+    }
     return bookTitle;
 }
 
@@ -161,6 +156,66 @@ function deleteBook() {
         libraryRoot.textContent = "No Books Saved";
     }
 }
+
+let formReadSwitch = false;
+function toggleNewBookFormReadState() {
+    if (formUnread.classList.contains("selected")) {
+        formReadSwitch = true;
+        formUnread.classList.remove("selected");
+        formRead.classList.add("selected");
+    } else {
+        formReadSwitch = false;
+        formUnread.classList.add("selected");
+        formRead.classList.remove("selected");
+    }
+}
+
+function newBook(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.fav = false;
+}
+
+function addBookFromUser() {
+    const title = formTitle.value;
+    const titleLc = title.toLowerCase();
+    const author = formAuthor.value;
+    const pages = formPages.value;
+    if (
+        title.length === 0 ||
+        library.find((book) => book.title.toLowerCase() === titleLc)
+    ) {
+        formTitle.classList.add("invalid-input");
+    } else if (author.length === 0) {
+        formAuthor.classList.add("invalid-input");
+    } else if (
+        pages.length === 0 &&
+        !isNaN(pages) && // number detection https://stackoverflow.com/a/175787
+        !isNaN(parseFloat(pages)) // whitespace strings
+    ) {
+        formPages.classList.add("invalid-input");
+    } else {
+        const book = new newBook(title, author, Number(pages), formReadSwitch);
+        library.push(book);
+        addBookToDomLibrary(book);
+    }
+}
+
+[formTitle, formAuthor, formPages].forEach((btn) =>
+    btn.addEventListener("keypress", (e) =>
+        e.target.classList.remove("invalid-input")
+    )
+);
+
+[formUnread, formRead].forEach((btn) =>
+    btn.addEventListener("click", toggleNewBookFormReadState)
+);
+
+formSubmit.addEventListener("click", () => {
+    addBookFromUser();
+});
 
 let library = SAMPLE_BOOKS;
 initFillLibrary();

@@ -8,6 +8,6 @@ DEMO: https://sibi361.github.io/TOP_library/
 
 -   [x] Add books along with the author name, page count and read status
 -   [ ] Persistent data storage in browser's `localStorage`
--   [ ] Mobile friendly UI
+-   [x] Mobile friendly UI
 -   [x] Ability to remove and favourite books
 -   [ ] Add Undo On Delete Feature

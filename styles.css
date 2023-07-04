@@ -146,6 +146,10 @@ input[type="text"]:focus-visible {
     grid-template: 1fr / 1fr;
 }
 
+.new-card {
+    border: 3px solid #f8c653 !important;
+}
+
 .card-title {
     margin-bottom: 1rem;
 }
@@ -226,40 +230,37 @@ div[class="card-title"] {
 
 .icon,
 .btn,
-.card,
 input[type="text"] {
     transition: 0.1s;
 }
 
-img {
-    transition: 0.5s !important;
-}
-
-.icon:hover {
-    /* transform: scale(1.1); */
+.card {
+    transition: 0.3s;
 }
 
 input[type="text"]:hover,
-input[type="text"]:focus,
-.btn:hover {
+input[type="text"]:focus {
     transform: scale(1.03);
 }
 
+.btn:hover {
+    transform: scale(1.05);
+}
+
 .card:hover {
-    /* transform: scale(1.02); */
+    transform: scale(1.02);
 }
 
-.card-buttons img:hover {
-    /* transform: scale(1.2); */
+img {
+    transition: 0.5s;
 }
 
-* {
-    /* transform: none !important; */
+img:hover,
+.icon:hover {
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
-    /* .unread:hover, */
-    /* .read:hover, */
     .card-buttons *,
     .card-buttons *:hover {
         background-color: #fff !important;
@@ -315,9 +316,17 @@ input[type="text"]:focus,
         margin-bottom: 1.5rem;
     }
 
+    .card {
+        height: 200px;
+    }
+
     * {
         /* prevent zoom on repeatedly tapping buttons */
         /* https://stackoverflow.com/a/53236027 */
-        touch-action: pan-y;
+        /* touch-action: pan-y; */
+    }
+
+    *:hover {
+        transform: scale(1) !important;
     }
 }

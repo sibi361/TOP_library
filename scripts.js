@@ -77,67 +77,36 @@ function highlightError(field) {
     field.focus();
 }
 
-function addBookFromUser() {
-    const title = formTitle.value.slice(0, MAX_TEXT_INPUT_LENGTH);
-    const author = formAuthor.value.slice(0, MAX_TEXT_INPUT_LENGTH);
-    const pages = formPages.value;
-    if (title.length === 0) {
-        highlightError(formTitle);
-    } else if (bookAlreadyExists(title)) {
-    } else if (author.length === 0) {
-        highlightError(formAuthor);
-    } else if (
-        Number(pages) > MAX_PAGE_COUNT ||
-        (pages.length !== 0 && // pages field is not mandatory, only then do non-number
-            isNaN(pages)) //  detection https://stackoverflow.com/a/175787
-    ) {
-        highlightError(formPages);
-    } else {
-        const book = new newBook(title, author, Number(pages), formReadSwitch);
-        library.push(book);
-        addBookToDomLibrary(book, true);
-    }
+// localStorage wrappers
+function readLs(key) {
+    const localStorageTemp = localStorage.getItem(key);
+    if (localStorageTemp !== null) return localStorageTemp;
+    else return false;
 }
 
-function newBook(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.fav = false;
+function writeLs(key, value) {
+    localStorage.setItem(key, value);
 }
 
-function bookAlreadyExists(givenTitle) {
-    const titleLc = givenTitle.toLocaleLowerCase();
-    if (library.find((book) => book.title.toLocaleLowerCase() === titleLc)) {
-        highlightError(formTitle);
-        const cards = libraryRoot.querySelectorAll(".card");
-        cards.forEach((card) => {
-            const cardBookTitle = card.querySelector(".card-title").textContent;
-            if (cardBookTitle.toLocaleLowerCase() === titleLc) {
-                highlightError(card);
-            }
+function clearLs() {
+    localStorage.clear();
+}
+
+function saveLibraryToLs() {
+    writeLs("library", JSON.stringify(library));
+}
+
+let cardButtonsTemplate = "";
+function initFillLibrary() {
+    cardButtonsTemplate = templateCardButtons.outerHTML;
+    templateCard.remove();
+
+    if (library.length === 0) libraryRoot.textContent = "No Books Saved";
+    else
+        library.forEach((book) => {
+            addBookToDomLibrary(book);
         });
-        return true;
-    }
-    return false;
 }
-
-// reset errors
-[formTitle, formAuthor, formPages].forEach((btn) =>
-    btn.addEventListener("keypress", (e) => {
-        e.target.classList.remove("invalid-input");
-        const cards = libraryRoot.querySelectorAll(".card");
-        cards.forEach((card) => {
-            card.classList.remove("invalid-input");
-        });
-    })
-);
-
-formSubmit.addEventListener("click", (e) => {
-    e.stopPropagation();
-    addBookFromUser();
-});
 
 function addBookToDomLibrary(book, scrollToCard = false) {
     const cardInner = document.createElement("div");
@@ -179,22 +148,110 @@ function addBookToDomLibrary(book, scrollToCard = false) {
     const deleteBtn = card.querySelector(".delete");
     deleteBtn.addEventListener("click", deleteBook);
 
-    libraryRoot.append(card);
+    // clear "No Books Saved" message
+    if (libraryRoot.childElementCount === 0) libraryRoot.innerHTML = "";
 
+    libraryRoot.append(card);
     if (scrollToCard) {
-        arollIntoView();
+        card.scrollIntoView();
         addClass(card, "new-card");
     }
 }
 
-let cardButtonsTemplate = "";
-function initFillLibrary() {
-    cardButtonsTemplate = templateCardButtons.outerHTML;
-    templateCard.remove();
+function addBookFromUser() {
+    const title = formTitle.value.slice(0, MAX_TEXT_INPUT_LENGTH);
+    const author = formAuthor.value.slice(0, MAX_TEXT_INPUT_LENGTH);
+    const pages = formPages.value;
+    if (title.length === 0) {
+        highlightError(formTitle);
+    } else if (bookAlreadyExists(title)) {
+    } else if (author.length === 0) {
+        highlightError(formAuthor);
+    } else if (
+        Number(pages) > MAX_PAGE_COUNT ||
+        (pages.length !== 0 && // pages field is not mandatory, only then do non-number
+            isNaN(pages)) //  detection https://stackoverflow.com/a/175787
+    ) {
+        highlightError(formPages);
+    } else {
+        const book = new newBook(title, author, Number(pages), formReadSwitch);
+        library.push(book);
+        saveLibraryToLs();
+        addBookToDomLibrary(book, true);
+    }
+}
 
-    library.forEach((book) => {
-        addBookToDomLibrary(book);
-    });
+function newBook(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.fav = false;
+}
+
+function bookAlreadyExists(givenTitle) {
+    const titleLc = givenTitle.toLocaleLowerCase();
+    if (library.find((book) => book.title.toLocaleLowerCase() === titleLc)) {
+        highlightError(formTitle);
+        const cards = libraryRoot.querySelectorAll(".card");
+        cards.forEach((card) => {
+            const cardBookTitle = card.querySelector(".card-title").textContent;
+            if (cardBookTitle.toLocaleLowerCase() === titleLc) {
+                highlightError(card);
+            }
+        });
+        return true;
+    }
+    return false;
+}
+
+// reset error highlights
+[formTitle, formAuthor, formPages].forEach((btn) =>
+    btn.addEventListener("keypress", (e) => {
+        e.target.classList.remove("invalid-input");
+        const cards = libraryRoot.querySelectorAll(".card");
+        cards.forEach((card) => {
+            card.classList.remove("invalid-input");
+        });
+    })
+);
+
+formSubmit.addEventListener("click", (e) => {
+    e.stopPropagation();
+    addBookFromUser();
+});
+
+function toggleCardButtonState() {
+    const cardButtons = this.parentElement;
+    const bookIndex = getBookTitle(cardButtons, true);
+
+    const options = this.parentElement.dataset.options
+        .split("|")
+        .map((op) => `.${op}`);
+    const offBtn = cardButtons.querySelector(options[0]);
+    const onBtn = cardButtons.querySelector(options[1]);
+    const key = options[1].slice(1);
+
+    if (offBtn.classList.contains("hidden")) {
+        library[bookIndex][key] = false;
+        addRemoveClass("hidden", offBtn, onBtn);
+    } else {
+        library[bookIndex][key] = true;
+        addRemoveClass("hidden", onBtn, offBtn);
+    }
+    saveLibraryToLs();
+}
+
+function deleteBook() {
+    const bookTitle = getBookTitle(this);
+
+    library = library.filter((book) => book.title !== bookTitle);
+    saveLibraryToLs();
+
+    this.parentElement.parentElement.remove();
+    if (libraryRoot.childElementCount === 0) {
+        libraryRoot.textContent = "No Books Saved";
+    }
 }
 
 function getBookTitle(cardButtons, getIndexInstead = false) {
@@ -209,37 +266,6 @@ function getBookTitle(cardButtons, getIndexInstead = false) {
         );
     }
     return bookTitle;
-}
-
-function toggleCardButtonState() {
-    const cardButtons = this.parentElement;
-    const bookIndex = getBookTitle(cardButtons, true);
-
-    const options = this.parentElement.dataset.options
-        .split("|")
-        .map((op) => `.${op}`);
-    const offBtn = cardButtons.querySelector(options[0]);
-    const onBtn = cardButtons.querySelector(options[1]);
-    const key = options[1];
-
-    if (offBtn.classList.contains("hidden")) {
-        library[bookIndex][key] = false;
-        addRemoveClass("hidden", offBtn, onBtn);
-    } else {
-        library[bookIndex][key] = true;
-        addRemoveClass("hidden", onBtn, offBtn);
-    }
-}
-
-function deleteBook() {
-    const bookTitle = getBookTitle(this);
-
-    library = library.filter((book) => book.title !== bookTitle);
-
-    this.parentElement.parentElement.remove();
-    if (libraryRoot.childElementCount === 0) {
-        libraryRoot.textContent = "No Books Saved";
-    }
 }
 
 // toggleHeaderFormReadState
@@ -263,5 +289,9 @@ document.body.addEventListener("click", () => {
     removeClass(newCard, "new-card");
 });
 
-let library = SAMPLE_BOOKS;
+let library = JSON.parse(readLs("library"));
+if (!library) {
+    library = SAMPLE_BOOKS;
+    saveLibraryToLs();
+}
 initFillLibrary();

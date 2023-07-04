@@ -9,6 +9,7 @@ body {
         arial, sans-serif;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .container {
@@ -318,12 +319,6 @@ img:hover,
 
     .card {
         height: 200px;
-    }
-
-    * {
-        /* prevent zoom on repeatedly tapping buttons */
-        /* https://stackoverflow.com/a/53236027 */
-        /* touch-action: pan-y; */
     }
 
     *:hover {

@@ -54,19 +54,21 @@ const templateCard = document.querySelector("#template-card");
 const templateCardButtons = templateCard.querySelector(".card-buttons");
 
 function addBookToDomLibrary(book) {
+    const cardInner = document.createElement("div");
+    cardInner.classList.add("card-inner");
+
     const title = document.createElement("div");
     title.classList.add("card-title");
     title.textContent = book.title;
     const author = document.createElement("div");
     author.classList.add("card-text");
     author.textContent = book.author;
-    const pages = document.createElement("div");
-    pages.classList.add("card-text");
-    pages.textContent = `${book.pages} pages`;
-
-    const cardInner = document.createElement("div");
-    cardInner.classList.add("card-inner");
-    cardInner.append(title, author, pages);
+    if (book.pages !== 0) {
+        const pages = document.createElement("div");
+        pages.classList.add("card-text");
+        pages.textContent = `${book.pages} pages`;
+        cardInner.append(title, author, pages);
+    } else cardInner.append(title, author);
 
     const card = document.createElement("div");
     card.classList.add("card");
@@ -152,7 +154,7 @@ function deleteBook() {
     }
 }
 
-// toggleNewBookFormReadState
+// toggleHeaderFormReadState
 let formReadSwitch = false;
 [formUnread, formRead].forEach((btn) =>
     btn.addEventListener("click", () => {
@@ -185,7 +187,7 @@ function addBookFromUser() {
     } else if (author.length === 0) {
         formAuthor.classList.add("invalid-input");
     } else if (
-        pages.length === 0 ||
+        pages.length !== 0 && // pages field is not mandatory, only then do
         isNaN(pages) // non-number detection https://stackoverflow.com/a/175787
     ) {
         formPages.classList.add("invalid-input");

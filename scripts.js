@@ -54,6 +54,7 @@ const formSubmit = document.querySelector("#submit");
 const libraryRoot = document.querySelector(".content-inner");
 const templateCard = document.querySelector("#template-card");
 const templateCardButtons = templateCard.querySelector(".card-buttons");
+const resetBtn = document.querySelector(".resetBtn");
 
 function addClass(element, className) {
     element.classList.add(className);
@@ -75,6 +76,10 @@ function hideElement(element) {
 function highlightError(field) {
     addClass(field, "invalid-input");
     field.focus();
+}
+
+function showConfirmPopup(message) {
+    return confirm(message);
 }
 
 // localStorage wrappers
@@ -178,6 +183,10 @@ function addBookFromUser() {
         library.push(book);
         saveLibraryToLs();
         addBookToDomLibrary(book, true);
+
+        formTitle.value = "";
+        formAuthor.value = "";
+        formPages.value = "";
     }
 }
 
@@ -205,9 +214,9 @@ function bookAlreadyExists(givenTitle) {
     return false;
 }
 
-// reset error highlights
-[formTitle, formAuthor, formPages].forEach((btn) =>
-    btn.addEventListener("keypress", (e) => {
+// remove all error highlights on keypress
+[formTitle, formAuthor, formPages].forEach((input) =>
+    input.addEventListener("keypress", (e) => {
         e.target.classList.remove("invalid-input");
         const cards = libraryRoot.querySelectorAll(".card");
         cards.forEach((card) => {
@@ -216,11 +225,28 @@ function bookAlreadyExists(givenTitle) {
     })
 );
 
+// toggleHeaderFormReadState
+let formReadSwitch = false;
+[formUnread, formRead].forEach((btn) =>
+    btn.addEventListener("click", () => {
+        if (!btn.classList.contains("selected")) {
+            if (formUnread.classList.contains("selected")) {
+                formReadSwitch = true;
+                addRemoveClass("selected", formUnread, formRead);
+            } else {
+                formReadSwitch = false;
+                addRemoveClass("selected", formRead, formUnread);
+            }
+        }
+    })
+);
+
 formSubmit.addEventListener("click", (e) => {
     e.stopPropagation();
     addBookFromUser();
 });
 
+// book cards stuff below
 function toggleCardButtonState() {
     const cardButtons = this.parentElement;
     const bookIndex = getBookTitle(cardButtons, true);
@@ -245,6 +271,8 @@ function toggleCardButtonState() {
 function deleteBook() {
     const bookTitle = getBookTitle(this);
 
+    if (!showConfirmPopup(`Delete the book [${bookTitle}]?`)) return;
+
     library = library.filter((book) => book.title !== bookTitle);
     saveLibraryToLs();
 
@@ -268,25 +296,25 @@ function getBookTitle(cardButtons, getIndexInstead = false) {
     return bookTitle;
 }
 
-// toggleHeaderFormReadState
-let formReadSwitch = false;
-[formUnread, formRead].forEach((btn) =>
-    btn.addEventListener("click", () => {
-        if (!btn.classList.contains("selected")) {
-            if (formUnread.classList.contains("selected")) {
-                formReadSwitch = true;
-                addRemoveClass("selected", formUnread, formRead);
-            } else {
-                formReadSwitch = false;
-                addRemoveClass("selected", formRead, formUnread);
-            }
-        }
-    })
-);
+function resetLibrary() {
+    if (!showConfirmPopup("Delete all books and reset to default?")) return;
+    if (
+        !showConfirmPopup(
+            "Are you absolutely sure? ALL books will be PERMANENTLY DELETED"
+        )
+    )
+        return;
+
+    clearLs();
+    document.location.reload();
+    window.scrollTo(0, 0);
+}
+
+resetBtn.addEventListener("click", resetLibrary);
 
 document.body.addEventListener("click", () => {
     const newCard = document.querySelector(".new-card");
-    removeClass(newCard, "new-card");
+    if (newCard !== null) removeClass(newCard, "new-card");
 });
 
 let library = JSON.parse(readLs("library"));
@@ -294,4 +322,5 @@ if (!library) {
     library = SAMPLE_BOOKS;
     saveLibraryToLs();
 }
+
 initFillLibrary();

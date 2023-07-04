@@ -94,7 +94,7 @@ input[type="text"]:focus-visible {
 }
 
 .unread.selected {
-    background-color: rgba(235, 40, 95, 0.2);
+    background-color: rgba(235, 40, 95, 0.1);
 }
 
 .read.selected {
@@ -131,6 +131,10 @@ input[type="text"]:focus-visible {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: min-content;
     gap: 1.5rem;
+}
+
+#template-card {
+    display: none;
 }
 
 .card {
@@ -202,6 +206,10 @@ input[type="text"]:focus-visible {
     text-align: center;
     opacity: 0.5;
     margin: 1rem;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 a {
@@ -225,6 +233,7 @@ div[class="card-title"] {
 
 .icon,
 .btn,
+.resetBtn,
 .card-buttons img {
     cursor: pointer;
 }

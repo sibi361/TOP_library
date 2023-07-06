@@ -190,12 +190,14 @@ function addBookFromUser() {
     }
 }
 
-function newBook(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.fav = false;
+class newBook {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+        this.fav = false;
+    }
 }
 
 function bookAlreadyExists(givenTitle) {

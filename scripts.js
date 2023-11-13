@@ -1,4 +1,4 @@
-const isAdmin = true;
+const isAdmin = false;
 
 const MAX_TEXT_INPUT_LENGTH = 100;
 const MAX_PAGE_COUNT = 10000;
@@ -344,7 +344,7 @@ if (!library) {
     saveLibraryToLs();
 }
 
-if (isAdmin) searchForm.classList.remove("hidden");
-else newBookForm.classList.remove("hidden");
+if (isAdmin) searchForm.classList.add("hidden");
+else newBookForm.classList.add("hidden");
 
 initFillLibrary();

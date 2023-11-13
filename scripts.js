@@ -2,50 +2,9 @@ const isAdmin = false;
 
 const MAX_TEXT_INPUT_LENGTH = 100;
 const MAX_PAGE_COUNT = 10000;
-const SAMPLE_BOOKS = [
-    {
-        author: "Chinua Achebe",
-        pages: 209,
-        title: "Things Fall Apart",
-        read: true,
-        fav: true,
-    },
-    {
-        author: "The Jungle Book",
-        pages: 176,
-        title: "Rudyard Kipling",
-        read: true,
-        fav: true,
-    },
-    {
-        author: "Jane Austen",
-        pages: 226,
-        title: "Pride and Prejudice",
-        read: true,
-        fav: false,
-    },
-    {
-        author: "Frank Herbert",
-        pages: 896,
-        title: "Dune",
-        read: false,
-        fav: false,
-    },
-    {
-        author: "Jules Verne",
-        pages: 280,
-        title: "Around the World in Eighty Days",
-        read: true,
-        fav: true,
-    },
-    {
-        author: "Agatha Christie",
-        pages: 272,
-        title: "And Then There Were None",
-        read: false,
-        fav: false,
-    },
-];
+const BOOKS_FETCH_URL = "./sampleBooks.json";
+const IMAGE_ROOT =
+    "https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/";
 
 const searchForm = document.querySelector(".form-search");
 const newBookForm = document.querySelector(".form-new-book");
@@ -106,8 +65,32 @@ function saveLibraryToLs() {
     writeLs("library", JSON.stringify(library));
 }
 
+function shuffle(array) {
+    var currentIndex = array.length,
+        temp,
+        randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temp = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temp;
+    }
+
+    return array;
+}
+
 let cardButtonsTemplate = "";
-function initFillLibrary() {
+async function initFillLibrary() {
+    if (!library.length) {
+        await fetch(BOOKS_FETCH_URL).then((resp) =>
+            resp.json().then((json) => (library = json))
+        );
+        shuffle(library);
+        saveLibraryToLs();
+    }
+
     cardButtonsTemplate = templateCardButtons.outerHTML;
     templateCard.remove();
 
@@ -137,7 +120,24 @@ function addBookToDomLibrary(book, scrollToCard = false) {
 
     const card = document.createElement("div");
     addClass(card, "card");
+
     card.append(cardInner);
+
+    const bookImg = document.createElement("img");
+    bookImg.src = `${IMAGE_ROOT}${book.imageLink}`;
+    bookImg.setAttribute("loading", "lazy");
+    bookImg.setAttribute(
+        "alt",
+        `Cover photo of ${book.title} by ${book.author}`
+    );
+    bookImg.setAttribute("onclick", `window.open("${book.link}");`);
+    addClass(bookImg, "book-image");
+
+    const bookImgWrapper = document.createElement("div");
+    addClass(bookImgWrapper, "book-image-wrapper");
+    bookImgWrapper.append(bookImg);
+    card.append(bookImgWrapper);
+
     card.innerHTML += cardButtonsTemplate;
 
     const notFavBtn = card.querySelector(".not-fav");
@@ -280,7 +280,7 @@ function deleteBook() {
 
     if (!showConfirmPopup(`Delete the book [${bookTitle}]?`)) return;
 
-    library = library.filter((book) => book.title !== bookTitle);
+    delete library.find((book) => book.title === bookTitle);
     saveLibraryToLs();
 
     this.parentElement.parentElement.remove();
@@ -290,8 +290,9 @@ function deleteBook() {
 }
 
 function getBookTitle(cardButtons, getIndexInstead = false) {
+    console.log(cardButtons);
     let bookTitle =
-        cardButtons.parentElement.previousSibling.querySelector(
+        cardButtons.parentElement.parentElement.firstChild.querySelector(
             ".card-title"
         ).textContent;
     if (getIndexInstead) {
@@ -339,10 +340,6 @@ document.body.addEventListener("click", () => {
 });
 
 let library = JSON.parse(readLs("library"));
-if (!library) {
-    library = SAMPLE_BOOKS;
-    saveLibraryToLs();
-}
 
 if (isAdmin) searchForm.classList.add("hidden");
 else newBookForm.classList.add("hidden");

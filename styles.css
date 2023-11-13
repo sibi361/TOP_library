@@ -39,10 +39,15 @@ body {
     font-size: 2rem;
 }
 
-.form {
+.form-search,
+.form-new-book {
     flex: 0.95;
     display: flex;
     align-items: center;
+}
+
+.form-search {
+    max-width: 20%;
 }
 
 .form-inputs {
@@ -289,6 +294,10 @@ img:hover,
     .form {
         width: 100%;
         margin: 1rem 0;
+    }
+
+    .form-search {
+        max-width: none;
     }
 
     .header {

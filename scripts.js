@@ -1,3 +1,5 @@
+const isAdmin = true;
+
 const MAX_TEXT_INPUT_LENGTH = 100;
 const MAX_PAGE_COUNT = 10000;
 const SAMPLE_BOOKS = [
@@ -45,6 +47,9 @@ const SAMPLE_BOOKS = [
     },
 ];
 
+const searchForm = document.querySelector(".form-search");
+const newBookForm = document.querySelector(".form-new-book");
+const formSearch = document.querySelector("#book-search");
 const formTitle = document.querySelector("#book-title");
 const formAuthor = document.querySelector("#book-author");
 const formPages = document.querySelector("#book-pageCount");
@@ -312,6 +317,20 @@ function resetLibrary() {
     window.scrollTo(0, 0);
 }
 
+function search() {
+    const query = formSearch.value.toLocaleLowerCase();
+    const books = libraryRoot.querySelectorAll(".card");
+
+    library.forEach((book, i) =>
+        book.title.toLocaleLowerCase().includes(query) ||
+        book.author.toLocaleLowerCase().includes(query)
+            ? books[i].classList.remove("hidden")
+            : books[i].classList.add("hidden")
+    );
+}
+
+formSearch.addEventListener("keyup", search);
+
 resetBtn.addEventListener("click", resetLibrary);
 
 document.body.addEventListener("click", () => {
@@ -324,5 +343,8 @@ if (!library) {
     library = SAMPLE_BOOKS;
     saveLibraryToLs();
 }
+
+if (isAdmin) searchForm.classList.remove("hidden");
+else newBookForm.classList.remove("hidden");
 
 initFillLibrary();

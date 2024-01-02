@@ -2,9 +2,11 @@
 
 Book library initially made using Vanilla CSS and JS as part of [The Odin Project](https://www.theodinproject.com/). Later upgraded to a full stack web app using Express JS and sqlite.
 
-DEMO: https://lite-library.onrender.com/
+Frontend only demo: https://sibi361.github.io/lite-library/
 
-Frontend only demo: https://sibi361.github.io/TOP_library/
+DEMO : https://lite-library.onrender.com/
+
+^This demo will take around 20 seconds to boot up
 
 ## Features
 
@@ -22,7 +24,7 @@ Frontend only demo: https://sibi361.github.io/TOP_library/
     git clone https://github.com/sibi361/lite-library.git
     ```
 
-1. Generate a [bcrypt salt](https://blog.logrocket.com/password-hashing-node-js-bcrypt/) and place it in [`.env`](.env) as `SALT`
+1. Generate a [bcrypt salt](https://blog.logrocket.com/password-hashing-node-js-bcrypt/) and place it in [`.env`](src/.env) as `SALT`
 
     ```
     # https://blog.logrocket.com/password-hashing-node-js-bcrypt/
@@ -34,7 +36,7 @@ Frontend only demo: https://sibi361.github.io/TOP_library/
     })
     ```
 
-1. Generate a [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) secret token using the below snippet and save it as `JWT_SECRET` in [`.env`](.env)
+1. Generate a [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) secret token using the below snippet and save it as `JWT_SECRET` in [`.env`](src/.env)
 
     ```
     node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
@@ -45,6 +47,11 @@ Frontend only demo: https://sibi361.github.io/TOP_library/
     ```
     npm run start -- 8080
     ```
+
+## TODO
+
+-   [ ] Fix: liteShare buttons not working after tab change
+-   [ ] Feature: redirect to liteShare page after login if visitor was logged out
 
 ## Legal
 

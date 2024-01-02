@@ -90,16 +90,6 @@
         "year": 1835
     },
     {
-        "author": "Samuel Beckett",
-        "country": "Republic of Ireland",
-        "imageLink": "images/molloy-malone-dies-the-unnamable.jpg",
-        "language": "French, English",
-        "link": "https://en.wikipedia.org/wiki/Molloy_(novel)",
-        "pages": 256,
-        "title": "Molloy, Malone Dies, The Unnamable, the trilogy",
-        "year": 1952
-    },
-    {
         "author": "Giovanni Boccaccio",
         "country": "Italy",
         "imageLink": "images/the-decameron.jpg",
@@ -908,95 +898,5 @@
         "pages": 864,
         "title": "Anna Karenina",
         "year": 1877
-    },
-    {
-        "author": "Leo Tolstoy",
-        "country": "Russia",
-        "imageLink": "images/the-death-of-ivan-ilyich.jpg",
-        "language": "Russian",
-        "link": "https://en.wikipedia.org/wiki/The_Death_of_Ivan_Ilyich",
-        "pages": 92,
-        "title": "The Death of Ivan Ilyich",
-        "year": 1886
-    },
-    {
-        "author": "Mark Twain",
-        "country": "United States",
-        "imageLink": "images/the-adventures-of-huckleberry-finn.jpg",
-        "language": "English",
-        "link": "https://en.wikipedia.org/wiki/Adventures_of_Huckleberry_Finn",
-        "pages": 224,
-        "title": "The Adventures of Huckleberry Finn",
-        "year": 1884
-    },
-    {
-        "author": "Valmiki",
-        "country": "India",
-        "imageLink": "images/ramayana.jpg",
-        "language": "Sanskrit",
-        "link": "https://en.wikipedia.org/wiki/Ramayana",
-        "pages": 152,
-        "title": "Ramayana",
-        "year": -450
-    },
-    {
-        "author": "Virgil",
-        "country": "Roman Empire",
-        "imageLink": "images/the-aeneid.jpg",
-        "language": "Classical Latin",
-        "link": "https://en.wikipedia.org/wiki/Aeneid",
-        "pages": 442,
-        "title": "The Aeneid",
-        "year": -23
-    },
-    {
-        "author": "Vyasa",
-        "country": "India",
-        "imageLink": "images/the-mahab-harata.jpg",
-        "language": "Sanskrit",
-        "link": "https://en.wikipedia.org/wiki/Mahabharata",
-        "pages": 276,
-        "title": "Mahabharata",
-        "year": -700
-    },
-    {
-        "author": "Walt Whitman",
-        "country": "United States",
-        "imageLink": "images/leaves-of-grass.jpg",
-        "language": "English",
-        "link": "https://en.wikipedia.org/wiki/Leaves_of_Grass",
-        "pages": 152,
-        "title": "Leaves of Grass",
-        "year": 1855
-    },
-    {
-        "author": "Virginia Woolf",
-        "country": "United Kingdom",
-        "imageLink": "images/mrs-dalloway.jpg",
-        "language": "English",
-        "link": "https://en.wikipedia.org/wiki/Mrs_Dalloway",
-        "pages": 216,
-        "title": "Mrs Dalloway",
-        "year": 1925
-    },
-    {
-        "author": "Virginia Woolf",
-        "country": "United Kingdom",
-        "imageLink": "images/to-the-lighthouse.jpg",
-        "language": "English",
-        "link": "https://en.wikipedia.org/wiki/To_the_Lighthouse",
-        "pages": 209,
-        "title": "To the Lighthouse",
-        "year": 1927
-    },
-    {
-        "author": "Marguerite Yourcenar",
-        "country": "France/Belgium",
-        "imageLink": "images/memoirs-of-hadrian.jpg",
-        "language": "French",
-        "link": "https://en.wikipedia.org/wiki/Memoirs_of_Hadrian",
-        "pages": 408,
-        "title": "Memoirs of Hadrian",
-        "year": 1951
     }
 ]

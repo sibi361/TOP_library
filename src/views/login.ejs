@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login - LiteLibrary</title>
+        <link rel="stylesheet" href="/assets/stylesLogin.css" />
+        <script src="/assets/scriptsAuth.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <a href=".">
+                    <div class="logo">
+                        <img
+                            class="logo-icon"
+                            src="/assets/icons/bookshelf.svg"
+                            alt="Logo"
+                        />
+                        <div class="logo-text">LiteLibrary</div>
+                    </div></a
+                >
+            </div>
+
+            <div class="content">
+                <div class="content-inner">
+                    <p>Demo username: demo123<br />Demo password: demo123</p>
+                    <form method="post">
+                        <div class="form">
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Username"
+                                maxlength="20"
+                                required
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                maxlength="256"
+                                placeholder="Password"
+                                required
+                            />
+                            <input type="submit" hidden />
+                            <div id="submit" class="btn">Login</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">
+                <a
+                    href="https://github.com/sibi361/TOP_library"
+                    target="_blank"
+                >
+                    <img src="assets/icons/github.svg" alt="Logo" />
+                </a>
+
+                <a href="register">
+                    <div class="footerBtn">Don't have an account? Register</div>
+                </a>
+
+                <!--
+                    Books data credit: https://github.com/benoitvallon/100-best-books/blob/master/books.json
+                -->
+            </div>
+        </div>
+    </body>
+</html>

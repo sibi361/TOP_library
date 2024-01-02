@@ -3,9 +3,14 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Book Library</title>
-        <link rel="stylesheet" href="styles.css" />
-        <script src="scripts.js" defer></script>
+        <title>LiteLibrary</title>
+        <link rel="stylesheet" href="/assets/styles.css" />
+        <script src="/assets/scripts.js" defer></script>
+        <style>
+            .card-title {
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -14,31 +19,18 @@
                     <div class="logo">
                         <img
                             class="logo-icon"
-                            src="icons/bookshelf.svg"
+                            src="/assets/icons/bookshelf.svg"
                             alt="Logo"
                         />
-                        <div class="logo-text">Library</div>
+                        <div class="logo-text">LiteLibrary</div>
                     </div></a
                 >
-                <div class="form-search">
-                    <div class="form-inputs">
-                        <input
-                            type="text"
-                            id="book-search"
-                            placeholder="Search"
-                            length="100"
-                            required
-                        />
-                    </div>
-                </div>
-                <div class="form-new-book">
+                <div class="form-new-book hidden">
                     <div class="form-inputs">
                         <input
                             type="text"
                             id="book-title"
                             placeholder="Book Title"
-                            length="100"
-                            required
                         />
                         <input
                             type="text"
@@ -54,82 +46,87 @@
                             <div class="form-read">
                                 <img
                                     class="icon unread selected"
-                                    src="icons/eye-off-outline.svg"
+                                    src="/assets/icons/eye-off-outline.svg"
                                     alt="unread"
                                 />
                                 |
                                 <img
                                     class="icon read"
-                                    src="icons/eye-check-outline.svg"
+                                    src="/assets/icons/eye-check-outline.svg"
                                     alt="read"
                                 />
                             </div>
-                            <div id="submit" class="btn">Add Book</div>
                         </div>
+                    </div>
+                </div>
+                <div class="form-search">
+                    <button id="submit" class="btn"></button>
+                    <div class="form-inputs">
+                        <input
+                            type="text"
+                            id="book-search"
+                            placeholder="Search"
+                            length="<%= maxInputLength %>"
+                            required
+                        />
                     </div>
                 </div>
             </div>
 
             <div class="content">
-                <div class="content-heading">Your Books</div>
                 <div class="content-inner">
-                    <div class="card" id="template-card">
+                    <div id="template-card" class="card">
                         <div class="card-inner">
                             <div class="card-title">Book Title</div>
                             <div class="card-text">Book Author</div>
-                            <div class="card-text">Book Page Count</div>
+                            <div class="card-text">Page Count</div>
+                        </div>
+                        <div class="book-image-wrapper">
+                            <img
+                                src="/assets/icons/bookshelf.svg"
+                                loading="lazy"
+                                alt="Cover image alt"
+                                class="book-image"
+                            />
                         </div>
                         <div class="card-buttons">
                             <div data-options="not-fav|fav">
                                 <img
                                     class="not-fav"
-                                    src="icons/star-outline.svg"
+                                    src="/assets/icons/star-outline.svg"
                                     alt="mark as not favourite"
                                 /><img
                                     class="fav"
-                                    src="icons/star.png"
+                                    src="/assets/icons/star.png"
                                     alt="mark as favourite"
                                 />
                             </div>
                             <div data-options="unread|read">
                                 <img
                                     class="unread"
-                                    src="icons/eye-off-outline.svg"
+                                    src="/assets/icons/eye-off-outline.svg"
                                     alt="mark as unread"
                                 /><img
                                     class="read"
-                                    src="icons/eye-check-outline.svg"
+                                    src="/assets/icons/eye-check-outline.svg"
                                     alt="mark as read"
                                 />
                             </div>
                             <img
                                 class="delete"
-                                src="icons/delete.svg"
+                                src="/assets/icons/delete.svg"
                                 alt="delete"
-                            />
-                        </div>
-                        <div class="book-image-wrapper">
-                            <img
-                                src=""
-                                loading="lazy"
-                                alt=""
-                                onclick='window.open("");'
-                                class="book-image"
                             />
                         </div>
                     </div>
                 </div>
             </div>
-
+            <!--
+                    Books data credit: https://github.com/benoitvallon/100-best-books/blob/master/books.json
+            -->
             <div class="footer">
-                <div class="resetBtn">Reset Library To Default</div>
-
-                <a
-                    href="https://github.com/sibi361/TOP_library"
-                    target="_blank"
-                >
-                    <img src="icons/github.svg" class="icon" alt="Logo" />&nbsp;
-                </a>
+                <div id="stats"></div>
+                <div id="logoutBtn" class="footerBtn"></div>
             </div>
         </div>
     </body>

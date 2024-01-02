@@ -210,7 +210,7 @@ app.post("/api/login", async (req, res) => {
             .send({ status: "error", msg: "All fields are mandatory" });
 
     if (!reUname.test(input_uname) || !rePass.test(input_password))
-        return res.status(400).send({
+        return res.status(403).send({
             status: "error",
             msg: "Invalid credentials",
         });
@@ -565,7 +565,7 @@ app.get("/resetDb", async (req, res) => {
     ) {
         await initDb();
         res.send({ status: "ok" });
-    } else res.send({ status: "error", msg: "Invalid token" });
+    } else res.status(403).send({ status: "error", msg: "Invalid token" });
 });
 
 app.listen(PORT, () => console.log(`Serving on http://localhost:${PORT}/`));

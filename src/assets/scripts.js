@@ -239,7 +239,7 @@ const fetchBookData = async (title, author) => {
                 if (r.numFound === 0) return undefined;
 
                 title = r.docs[0]?.title;
-                link = `https://openlibrary.org/${r.docs[0]?.key}`;
+                link = `https://openlibrary.org${r.docs[0]?.key}`;
                 author = r.docs[0]?.author_name[0];
                 pages = r.docs[0]?.number_of_pages_median;
                 const isbn = r.docs[0]?.isbn[0];

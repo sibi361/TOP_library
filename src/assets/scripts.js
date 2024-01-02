@@ -192,9 +192,9 @@ function addListeners() {
                 )
             );
         else {
-            if (getUsername() === document.location.pathname.split("/")[2])
-                hideElement(reportBtn);
-            else {
+            if (getUsername() === document.location.pathname.split("/")[2]) {
+                // hideElement(reportBtn);
+            } else {
                 toggleBtnList.forEach((btn) => btn.parentElement.remove());
                 deleteBtn.remove();
 
@@ -452,6 +452,10 @@ async function deleteBook() {
                         (book) => book.title !== bookTitle
                     );
                     saveLibraryToLs();
+
+                    // go to library after deleting book on liteShare page
+                    if (document.location.toString().includes("liteShare"))
+                        document.location = "/";
                 } else alert(r.msg);
             });
     } catch (e) {}

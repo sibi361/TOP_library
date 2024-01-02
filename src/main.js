@@ -68,9 +68,10 @@ app.use(
     })
 );
 
-// set req.ip using X-Forwarded-For so that
-// client IP can reach morgan and express-rate-limit
-app.enable("trust proxy");
+// This sets req.ip using X-Forwarded-For so that morgan and express-rate-limit can get the actual client IP
+// https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
+// Render.com employs two proxies, hence the actual client IP will be at third position
+app.set("trust proxy", 3);
 
 // logging
 app.use(morgan(`:remote-addr ":user-agent" ":method :url" :status`));
@@ -92,7 +93,7 @@ const limiter_reg = rateLimit({
     windowMs: 10 * 60 * 1000,
     max: 3,
 });
-app.use("/api/register", limiter_reg);
+app.use("/api-register", limiter_reg);
 
 // api RATE LIMITED TO 3 RPS; resets every minute
 const limiter = rateLimit({
@@ -139,7 +140,7 @@ app.get("/register", utils.authCheck, async (req, res) => {
     });
 });
 
-app.post("/api/register", async (req, res) => {
+app.post("/api-register", async (req, res) => {
     let input_uname = req.query.username;
     let input_password = req.query.password;
 

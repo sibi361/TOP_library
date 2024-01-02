@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             let host = "/api/login";
             if (document.location.pathname.includes("register"))
-                host = "/api/register";
+                host = "/api-register";
             await fetch(
                 `${host}?username=${
                     document.querySelector("input[name='username']").value

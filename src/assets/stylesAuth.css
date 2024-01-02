@@ -61,7 +61,17 @@ body {
 
     border-radius: 0.5rem;
     box-shadow: inset 508px 0px 0px -500px #f0b429, 3px 3px 10px #d3d6d8;
+
+    /* ************************* for demo ************************* */
+    flex-direction: column;
+    padding-top: 1rem;
+    gap: 0.5rem;
 }
+
+.content-inner p {
+    opacity: 0.6;
+}
+/* ************************* */
 
 .form {
     display: flex;

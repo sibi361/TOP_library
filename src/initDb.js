@@ -8,10 +8,10 @@ const books = require("./books.json");
 
 dotenv.config();
 
-fs.rmSync(process.env.DB_FOLDER, { recursive: true, force: true });
-fs.mkdirSync(process.env.DB_FOLDER);
+const init = async () => {
+    await fs.rmSync(process.env.DB_FOLDER, { recursive: true, force: true });
+    await fs.mkdirSync(process.env.DB_FOLDER);
 
-(async function () {
     await db.initUsersDb();
     data["users"].forEach(
         async (user) => await db.addNewUserRecord(user.username, user.hash)
@@ -22,4 +22,6 @@ fs.mkdirSync(process.env.DB_FOLDER);
     utils.shuffleArray(_books);
     await db.addNewUserBooks("demo123", _books.slice(0, 8));
     console.log("DB: Books ready");
-})();
+};
+
+module.exports = init;

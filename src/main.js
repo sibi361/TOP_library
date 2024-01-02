@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 const nanoid = require("nanoid");
 
 const utils = require("./utils.js");
+const initDb = require("./initDb.js");
 const db = require("./utilsDb.js");
 
 let PORT;
@@ -50,7 +51,7 @@ const ADMIN_LOCKED_MSG =
 const reUname = new RegExp(`^${REGEX_UNAME}$`);
 const rePass = new RegExp(`^${REGEX_PASSWD}$`);
 
-require("./initDb.js");
+initDb();
 const books = require("./books.json");
 
 const app = express();
@@ -67,6 +68,10 @@ app.use(
     })
 );
 
+// set req.ip using X-Forwarded-For so that
+// client IP can reach morgan and express-rate-limit
+app.enable("trust proxy");
+
 // logging
 app.use(morgan(`:remote-addr ":user-agent" ":method :url" :status`));
 
@@ -81,28 +86,28 @@ app.use(
     })
 );
 
-// // /register RATE LIMITED TO 2 request for 10 minutes
-// // because new DB file created for every signup
-// const limiter_reg = rateLimit({
-//     windowMs: 10 * 60 * 1000,
-//     max: 2,
-// });
-// app.use("/register", limiter_reg);
+// register RATE LIMITED TO 3 request for 10 minutes
+// because new DB file created for every signup
+const limiter_reg = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 3,
+});
+app.use("/api/register", limiter_reg);
 
-// // RATE LIMITED TO 1 RPS; resets every minute
-// const limiter = rateLimit({
-//     windowMs: 60 * 1000,
-//     max: 60,
-// });
-// app.use("/api", limiter);
+// api RATE LIMITED TO 3 RPS; resets every minute
+const limiter = rateLimit({
+    windowMs: 3 * 60 * 1000,
+    max: 60,
+});
+app.use("/api", limiter);
 
-// // RATE LIMITED TO 5 RPS; resets every 5 minutes
-// const limiter_lax = rateLimit({
-//     windowMs: 5 * 60 * 1000,
-//     max: 5 * 300,
-// });
-// app.use("/getBooks", limiter_lax);
-// app.use("/view", limiter_lax);
+// RATE LIMITED TO 5 RPS; resets every 5 minutes
+const limiter_lax = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 5 * 300,
+});
+app.use("/getBooks", limiter_lax);
+app.use("/view", limiter_lax);
 
 app.use(cookieParser());
 
@@ -116,12 +121,6 @@ app.use(function (err, req, res, next) {
 app.get("/", utils.authCheck, async (req, res) => {
     return res.render("index", {
         maxInputLength: MAX_INPUT_LENGTH,
-    });
-});
-
-app.get("/test", async (req, res) => {
-    return res.send({
-        r: req.headers,
     });
 });
 
@@ -140,7 +139,7 @@ app.get("/register", utils.authCheck, async (req, res) => {
     });
 });
 
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
     let input_uname = req.query.username;
     let input_password = req.query.password;
 
@@ -555,6 +554,17 @@ app.post("/api/delete", utils.authCheck, (req, res) => {
     } catch (e) {
         utils.handleError(req, res, e, BACKEND_ERROR_MSG);
     }
+});
+
+// endpoint to periodically reset DB using cron job
+app.get("/resetDb", async (req, res) => {
+    if (
+        req.query.token !== "" &&
+        req.query.token === process.env.RESET_DB_TOKEN
+    ) {
+        await initDb();
+        res.send({ status: "ok" });
+    } else res.send({ status: "error", msg: "Invalid token" });
 });
 
 app.listen(PORT, () => console.log(`Serving on http://localhost:${PORT}/`));

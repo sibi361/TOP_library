@@ -555,9 +555,9 @@ function search() {
     const books = libraryRoot.querySelectorAll(".card");
     books.forEach((book) => book.classList.add("hidden"));
 
-    library.forEach((book) =>
+    library.forEach((book, i) =>
         book.title.toLocaleLowerCase().includes(query)
-            ? book.classList.remove("hidden")
+            ? books[i].classList.remove("hidden")
             : {}
     );
 }

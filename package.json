@@ -4,7 +4,7 @@
     "description": "",
     "scripts": {
         "dev": "cd src && nodemon main.js",
-        "start": "cd src && node main.js 8080"
+        "start": "cd src && node main.js"
     },
     "keywords": [],
     "author": "",
